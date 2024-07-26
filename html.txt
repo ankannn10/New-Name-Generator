@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nickname Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        input[type="number"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            width: 80px;
+            text-align: center;
+        }
+
+        input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #5cb85c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #4cae4c;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #555;
+        }
+
+        .nickname-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .nickname-item {
+            padding: 5px;
+            background-color: #e7e7e7;
+            border-radius: 3px;
+            margin-bottom: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .nickname-item:hover {
+            background-color: #d7d7d7;
+        }
+    </style>
+</head>
+<body>
+    <h1>Unique Nickname Generator</h1>
+    <form id="nickname-form">
+        <label for="num_samples">Number of Nicknames:</label>
+        <input type="number" id="num_samples" name="num_samples" value="20" min="1" max="100">
+        <input type="submit" value="Generate">
+    </form>
+    <div class="result">
+        <ul id="nickname-list" class="nickname-list"></ul>
+    </div>
+    <script>
+        document.getElementById('nickname-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            const numSamples = document.getElementById('num_samples').value;
+            const response = await fetch('/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ num_samples: numSamples })
+            });
+            
+            const nicknames = await response.json();
+            const nicknameList = document.getElementById('nickname-list');
+            nicknameList.innerHTML = ''; // Clear previous results
+            
+            nicknames.forEach(nickname => {
+                const li = document.createElement('li');
+                li.textContent = nickname;
+                li.className = 'nickname-item';
+                nicknameList.appendChild(li);
+            });
+        });
+    </script>
+</body>
+</html>
