@@ -235,7 +235,7 @@ split_loss('val')
 # Save the model parameters
 torch.save(model.state_dict(), 'model.pth')
 
-# Sample from the model
+'''# Sample from the model
 for _ in range(20):
     
     out = []
@@ -245,7 +245,7 @@ for _ in range(20):
       logits = model(torch.tensor([context]))
       probs = F.softmax(logits, dim=1)
       # Sample from the distribution
-      ix = torch.multinomial(probs[0], num_samples=1).item()
+      ix = torch.multinomial(probs, num_samples=1).item()
       # Shift the context window and track the samples
       context = context[1:] + [ix]
       out.append(ix)
@@ -253,4 +253,24 @@ for _ in range(20):
       if ix == 0:
         break
     
-    print(''.join(itos[i] for i in out if i != 0)) # Decode and print the generated word
+    print(''.join(itos[i] for i in out)) # Decode and print the generated word'''
+
+# sample from the model
+for _ in range(20):
+    
+    out = []
+    context = [0] * block_size # initialize with all ...
+    while True:
+      # forward pass the neural net
+      logits = model(torch.tensor([context]))
+      probs = F.softmax(logits, dim=1)
+      # sample from the distribution
+      ix = torch.multinomial(probs, num_samples=1).item()
+      # shift the context window and track the samples
+      context = context[1:] + [ix]
+      out.append(ix)
+      # if we sample the special '.' token, break
+      if ix == 0:
+        break
+    
+    print(''.join(itos[i] for i in out)) # decode and print the generated word
