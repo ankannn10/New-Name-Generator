@@ -155,5 +155,5 @@ The web application (`app.py`) uses Flask to provide a web interface for generat
 
 ## License
 
-This project is licensed under the MIT License. See the LICENSE file for details.<br>
+MIT<br>
 Feel free to contribute to this project by opening issues or submitting pull requests. Your feedback and suggestions are highly appreciated!
